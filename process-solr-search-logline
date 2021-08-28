@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin
+});
+
+function processSolrSearchLine(line) {
+  if (!line.match(/\/select/)) return;
+  let paramsMatch = line.match(/params=\{([^ ]+)\} /);
+  if (!paramsMatch) return;
+  let u = new URLSearchParams(paramsMatch[1]);
+  for (let [k, v] of u) console.log(k + ":", v);
+  console.log("-".repeat(process.stdout.columns));
+}
+
+rl.on('line', line => {
+  processSolrSearchLine(line);
+})
